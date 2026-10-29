@@ -1,4 +1,5 @@
 require('dotenv').config();
+if(process.env.MONGODB_DNS_SERVERS) require('dns').setServers(process.env.MONGODB_DNS_SERVERS.split(',').map(x=>x.trim()).filter(Boolean));
 const express=require('express'),mongoose=require('mongoose'),cors=require('cors'),helmet=require('helmet');
 const {errorHandler}=require('./middleware/errors');
 const app=express();

@@ -1,4 +1,7 @@
 require('dotenv').config();
+if (process.env.MONGODB_DNS_SERVERS) {
+  require('dns').setServers(process.env.MONGODB_DNS_SERVERS.split(',').map(x => x.trim()).filter(Boolean));
+}
 
 const mongoose = require('mongoose');
 const { User, Project, BlogPost } = require('./models');

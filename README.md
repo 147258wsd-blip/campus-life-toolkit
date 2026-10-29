@@ -24,6 +24,7 @@ Replace both entries with actual public URLs before submitting this project.
 5. Copy `client/.env.example` to `client/.env`; set `VITE_API_URL=http://localhost:5000`.
 6. In `client/`, run `npm install` and `npm run dev`; open the displayed URL.
 7. For an administrator account, set `ADMIN_USERNAME`, `ADMIN_EMAIL`, and a unique 12+ character `ADMIN_PASSWORD` in `server/.env`. In `server/`, run `node create-admin.js` once, then log in with those credentials. Public registration creates regular users who can comment but cannot manage projects.
+8. If your local network returns `querySrv EBADRESP` for the Atlas URI, set `MONGODB_DNS_SERVERS=8.8.8.8` in `server/.env` and retry. This setting is optional and should be omitted on hosts whose DNS works normally.
 
 ## Environment variables
 
@@ -35,6 +36,7 @@ Replace both entries with actual public URLs before submitting this project.
 | `PORT` | Server | API port; defaults to 5000 |
 | `MONGODB_PROXY_HOST` | Server | Optional SOCKS5 proxy host for local Atlas connection |
 | `MONGODB_PROXY_PORT` | Server | Optional SOCKS5 proxy port |
+| `MONGODB_DNS_SERVERS` | Server | Optional comma-separated DNS resolvers for Atlas SRV lookups; use only if the local network's DNS fails |
 | `ADMIN_USERNAME` | Server | Initial administrator username |
 | `ADMIN_EMAIL` | Server | Initial administrator email |
 | `ADMIN_PASSWORD` | Server | Initial administrator password; 12+ characters |
