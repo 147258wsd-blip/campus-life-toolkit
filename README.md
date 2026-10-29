@@ -70,7 +70,11 @@ JSON request bodies are shown below. Protected requests require the header `Auth
 
 ## Deployment
 
-Deploy `server/` to a Node.js host. Set the server environment variables there, and include the host's outbound IP in Atlas Network Access when possible. Deploy `client/` to a static host with `VITE_API_URL` set to the deployed API origin. Build the client with `npm run build`, publish `dist/`, and configure SPA fallback to `index.html`. Set `CLIENT_ORIGIN` to the exact deployed front-end origin. Check registration, login, projects, blog, comments, contact, and admin CRUD on the public URLs.
+1. In Render, create a Blueprint from this repository's `render.yaml`. Enter `MONGODB_URI` and set `CLIENT_ORIGIN=http://localhost:5173` for the first deploy; update it to the Vercel URL after the front end exists. Render generates `JWT_SECRET`. Do not set the local proxy or DNS overrides on Render unless its environment requires them.
+2. In the Render service's **Connect → Outbound** tab, copy its outbound IP ranges and add those ranges to the Atlas Network Access list. This permits the deployed API to reach Atlas without opening the database to every IP.
+3. In Vercel, import this repository with **Root Directory = `client`**, **Build Command = `npm run build`**, and **Output Directory = `dist`**. Set `VITE_API_URL` to the deployed Render API origin. `client/vercel.json` provides the SPA route rewrite.
+4. Set Render's `CLIENT_ORIGIN` to the exact Vercel origin, redeploy the API if needed, and verify the public Projects, Blog, Contact, login, comments, and dashboard flows.
+5. Replace the pending live URLs above with the confirmed deployed URLs before submission.
 
 ## Submission
 
