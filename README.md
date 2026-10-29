@@ -42,6 +42,8 @@ Replace both entries with actual public URLs before submitting this project.
 | `ADMIN_PASSWORD` | Server | Initial administrator password; 12+ characters |
 | `VITE_API_URL` | Client | Full API origin, without `/api` |
 
+The cloud backend needs only `MONGODB_URI`, `JWT_SECRET`, and `CLIENT_ORIGIN`. Keep `ADMIN_PASSWORD` and other admin setup values on your local machine; the existing administrator is already stored in Atlas. Never commit `.env` or paste secrets into the README.
+
 ## Prepared portfolio content
 
 The English drafts for three project concepts and three blog posts are in `content/portfolio-content.md`. Structured versions are in `content/seed-content.json`. Repository and demo URLs are blank until real standalone tools exist. Once Atlas is reachable and the admin account exists, run `node seed-content.js` from `server/` to insert or update these six items.
@@ -52,6 +54,8 @@ JSON request bodies are shown below. Protected requests require the header `Auth
 
 | Method | Endpoint | Purpose | Body / params | Access |
 |---|---|---|---|---|
+| GET | `/` | API status | None | Public |
+| GET | `/health` | API and database connection status | None | Public |
 | POST | `/api/users/register` | Register a regular user | Body: `username`, `email`, `password` (6+ characters) | Public |
 | POST | `/api/users/login` | Return JWT and user profile | Body: `email`, `password` | Public |
 | GET | `/api/projects` | List all projects | None | Public |
@@ -68,13 +72,18 @@ JSON request bodies are shown below. Protected requests require the header `Auth
 | GET | `/api/blog/:postId/comments` | List post comments | Path: `postId` | Public |
 | POST | `/api/blog/:postId/comments` | Add a comment | Path: `postId`; body: `body` | Authenticated |
 
-## Deployment
+## Deployment on Vercel
 
-1. In Render, create a Blueprint from this repository's `render.yaml`. Enter `MONGODB_URI` and set `CLIENT_ORIGIN=http://localhost:5173` for the first deploy; update it to the Vercel URL after the front end exists. Render generates `JWT_SECRET`. Do not set the local proxy or DNS overrides on Render unless its environment requires them.
-2. In the Render service's **Connect → Outbound** tab, copy its outbound IP ranges and add those ranges to the Atlas Network Access list. This permits the deployed API to reach Atlas without opening the database to every IP.
-3. In Vercel, import this repository with **Root Directory = `client`**, **Build Command = `npm run build`**, and **Output Directory = `dist`**. Set `VITE_API_URL` to the deployed Render API origin. `client/vercel.json` provides the SPA route rewrite.
-4. Set Render's `CLIENT_ORIGIN` to the exact Vercel origin, redeploy the API if needed, and verify the public Projects, Blog, Contact, login, comments, and dashboard flows.
-5. Replace the pending live URLs above with the confirmed deployed URLs before submission.
+Create **two Vercel projects** from the same GitHub repository. Keep both on the Hobby plan.
+
+1. Deploy the API project first with **Root Directory = `server`** and Framework Preset **Express** (or Vercel's automatic detection). `server/index.js` exports the Express app for Vercel while `npm run dev` still starts a local server.
+2. Set the API project's environment variables for **Production**: `MONGODB_URI` (your Atlas driver URI, including the database name), `JWT_SECRET` (the same secret used by the local app if you want existing login tokens to remain valid), and initially `CLIENT_ORIGIN=http://localhost:5173`. Do not put these in GitHub or use the local DNS/proxy overrides unless the cloud environment specifically needs them.
+3. Open the API project's public URL. `/` should return `status: running`. `/health` reports whether the database is connected; `/api/projects` must return JSON before proceeding.
+4. Deploy the front-end project from the same repository with **Root Directory = `client`**, Framework Preset **Vite**, Build Command `npm run build`, Output Directory `dist`, and production environment variable `VITE_API_URL=https://YOUR-API-PROJECT.vercel.app` (no trailing slash or `/api`). `client/vercel.json` rewrites SPA routes to `index.html`.
+5. Change the API project's `CLIENT_ORIGIN` to the exact front-end production origin, such as `https://YOUR-CLIENT-PROJECT.vercel.app`, then redeploy the API. Verify projects, blog posts, contact, registration/login, comments, and dashboard on the two public URLs.
+6. Replace the two pending URLs above with the confirmed public URLs before creating the submission ZIP.
+
+**Atlas network access:** Vercel Hobby functions do not have fixed outbound IP addresses. Atlas must permit the function's outbound address; a single current computer IP will not work. A broad `0.0.0.0/0` Atlas rule permits connection attempts from anywhere and should only be used if you explicitly accept that exposure, with a unique least-privilege Atlas database user and a strong password. A stable restricted allowlist requires a hosting option with fixed outbound IPs or Vercel's paid Static IPs feature. Do not change Atlas access rules without deciding which option you will use.
 
 ## Submission
 
