@@ -1,0 +1,4 @@
+require('dotenv').config();
+const mongoose=require('mongoose'),bcrypt=require('bcryptjs');
+const {User}=require('./models');
+(async()=>{const {MONGODB_URI,ADMIN_USERNAME,ADMIN_EMAIL,ADMIN_PASSWORD}=process.env;if(!MONGODB_URI||!ADMIN_USERNAME||!ADMIN_EMAIL||!ADMIN_PASSWORD||ADMIN_PASSWORD.length<12)throw Error('Set MONGODB_URI, ADMIN_USERNAME, ADMIN_EMAIL, and a 12+ character ADMIN_PASSWORD');await mongoose.connect(MONGODB_URI,process.env.MONGODB_PROXY_HOST?{proxyHost:process.env.MONGODB_PROXY_HOST,proxyPort:Number(process.env.MONGODB_PROXY_PORT||1080)}:{});await User.findOneAndUpdate({email:ADMIN_EMAIL},{username:ADMIN_USERNAME,email:ADMIN_EMAIL,password:await bcrypt.hash(ADMIN_PASSWORD,12),isAdmin:true},{upsert:true,runValidators:true});console.log('Admin account ready');await mongoose.disconnect()})().catch(e=>{console.error(e.message);process.exit(1)});

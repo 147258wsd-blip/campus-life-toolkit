@@ -1,0 +1,39 @@
+{
+  "projects": [
+    {
+      "title": "Weekly Timetable Planner",
+      "description": "A concept for bringing classes, locations, and deadlines into one readable weekly view. The design emphasizes quick scanning on a phone and highlights possible schedule conflicts before they become a problem. A first version would let students add, edit, and remove course blocks. Reminders and calendar export could follow after the core timetable works reliably.",
+      "imageUrl": "",
+      "repoUrl": "",
+      "liveUrl": ""
+    },
+    {
+      "title": "Campus Event Explorer",
+      "description": "A concept for helping students discover talks, club activities, competitions, and community events in one place. Simple filters for date and category would make opportunities easier to find without a crowded feed. Each event would show its organizer, location, time, and source link so students can check the details before attending.",
+      "imageUrl": "",
+      "repoUrl": "",
+      "liveUrl": ""
+    },
+    {
+      "title": "Focus Session Timer",
+      "description": "A concept for a quiet study timer built around short, intentional sessions. It would offer clear start, pause, and reset controls, followed by an optional short break. The interface is designed to reduce distractions. Optional study history could be considered later, while the basic timer would work without an account.",
+      "imageUrl": "",
+      "repoUrl": "",
+      "liveUrl": ""
+    }
+  ],
+  "posts": [
+    {
+      "title": "Designing a Clearer Weekly Schedule",
+      "content": "A useful timetable should answer three questions quickly: what is next, where is it, and does it conflict with anything else? Students often keep this information across screenshots, messages, and calendar entries. My goal for the Weekly Timetable Planner is to bring those details into a single weekly view that is easy to scan between classes.\n\nI would begin with a small data model: a course name, day, start time, end time, and location. A new class should be checked against existing time blocks before it is saved. Clear labels and sufficient contrast would help students distinguish courses without relying on color alone. On mobile, the weekly grid could switch to a day-by-day list so that text remains readable.\n\nThe first prototype should focus on adding, editing, and removing classes. Reminders, deadline tracking, and calendar export can follow only after the basic schedule is reliable. This staged approach keeps the main task—understanding the week—at the center of the design."
+    },
+    {
+      "title": "Finding Campus Events Without Information Overload",
+      "content": "Campus events can be valuable, but information is often scattered across notice boards, group chats, and social media. The Campus Event Explorer concept starts with one question: how can a student find an activity that fits their interests and available time?\n\nEach event needs a clear title, date, location, category, short description, and a link to the organizer. A student should be able to filter by date and category without creating an account. I would prioritize a readable list over a dense calendar because a list gives more space for the details needed to decide whether to attend. Events that have already passed should be separated from upcoming ones.\n\nThe main design challenge is keeping information accurate. An event page should show its source and last update time, while organizers should have a straightforward way to correct details. The first version would test whether students can find a relevant event quickly; saved events and notifications could be considered later."
+    },
+    {
+      "title": "Keeping a Focus Timer Simple",
+      "content": "A focus timer can become distracting when it asks the user to configure too many settings. The Focus Session Timer concept takes a simpler approach: choose a task, start a short session, and return to work. The timer should remain readable at a glance and make pausing or resetting easy.\n\nA first version could offer a 25-minute focus period followed by a short break, while still allowing the student to adjust the duration. The controls should work with a keyboard and be understandable without sound. If a session ends while the tab is in the background, the interface should clearly show what happened when the student returns.\n\nI would avoid collecting detailed productivity data by default. Optional study history could help students reflect on their routines, but the core experience should work without an account. The best measure of success is whether a student can begin a session in seconds and keep attention on the task."
+    }
+  ]
+}
